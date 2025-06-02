@@ -15,7 +15,7 @@ lint:
 	composer exec --verbose phpcs -- --standard=PSR12 src public
 
 cbf:
-	composer exec --verbose phpcbf -- standard=PSR12 src public
+	composer exec --verbose phpcbf -- --standard=PSR12 src public
 
 test:
 	composer exec --verbose phpunit

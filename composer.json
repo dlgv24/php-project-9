@@ -6,6 +6,7 @@
             "name": "Alexander Dolgov"
         }
     ],
+    "description": "Page Analyzer is a web application that checks the structure and performance of web pages. It analyzes content, meta tags, and other key SEO elements to help improve website visibility and optimization.",
     "autoload": {
         "psr-4": {
             "App\\": "src/"
