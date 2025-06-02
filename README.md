@@ -4,7 +4,7 @@
 ## About project
 Page Analyzer is a web application that checks the structure and performance of web pages. It analyzes content, meta tags, and other key SEO elements to help improve website visibility and optimization.
 ## Project URL
-[Перейти на Google](https://www.google.com)
+[https://php-project-9-8tm2.onrender.com](https://php-project-9-8tm2.onrender.com)
 ## Prerequisites
 - Linux, Macos, WSL
 - PHP >= 8.0
