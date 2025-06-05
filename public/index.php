@@ -8,13 +8,19 @@ use Slim\Factory\AppFactory;
 use DI\Container;
 
 $container = new Container();
+$dependencies = require __DIR__ . '/../config/dependencies.php';
+$dependencies($container);
+
 $app = AppFactory::createFromContainer($container);
 
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response): Response {
-    $response->getBody()->write('Hello, World!');
-    return $response;
+    return $this->get('view')->render($response, 'home.twig');
 })->setName('home');
+
+$app->get('/urls', function (Request $request, Response $response): Response {
+    return $this->get('view')->render($response, 'urls.twig');
+})->setName('urls');
 
 $app->run();
