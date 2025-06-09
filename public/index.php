@@ -35,8 +35,17 @@ $app->get('/urls', function (Request $request, Response $response): Response {
     $stmt->execute();
     $urls = $stmt->fetchAll();
     $routeParser = RouteContext::fromRequest($request)->getRouteParser();
+    $urlCheckRepo = new UrlCheckRepository($this->get('pdo'));
     for ($i = 0; $i < count($urls); $i++) {
         $urls[$i]['link'] = $routeParser->urlFor('check', ['url_id' => $urls[$i]['id']]);
+        $lastCheck = $urlCheckRepo->lastCheck((int) $urls[$i]['id']);
+        if ($lastCheck === false) {
+            $urls[$i]['checked_at'] = '';
+            $urls[$i]['code_status'] = '';
+        } else {
+            $urls[$i]['checked_at'] = $lastCheck['created_at'];
+            $urls[$i]['status_code'] = $lastCheck['status_code'];
+        }
     }
     $params = [
         'urls' => $urls,

@@ -21,6 +21,13 @@ class UrlCheckRepository
         $stmt->execute(['urlId' => $urlId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function lastCheck(int $urlId): array|false
+    {
+        $stmt = $this->conn->prepare("SELECT id, status_code, h1, title, description, created_at FROM url_checks
+        WHERE url_id = :urlId ORDER BY id DESC LIMIT 1");
+        $stmt->execute(['urlId' => $urlId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     public function save(UrlCheck $urlCheck, int $urlId): void
     {
         $stmt = $this->conn->prepare("INSERT INTO
