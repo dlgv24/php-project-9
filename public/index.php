@@ -74,7 +74,8 @@ $app->get('/urls/{url_id}', function (Request $request, Response $response, arra
 
 $app->post('/urls', function (Request $request, Response $response): Response {
     $body = $request->getParsedBody();
-    $url = $body['url'] ?? '';
+    $bodyArr = is_array($body) ? $body : (array) $body;
+    $url = $bodyArr['url'] ?? '';
     $v = new Validator($url);
     $v->rules([
         'required' => ['name'],
@@ -123,11 +124,17 @@ $app->post('/urls/{url_id}/checks', function (Request $request, Response $respon
     $routeParser = RouteContext::fromRequest($request)->getRouteParser();
     if (!$urlCheck->resourceIsAvailable()) {
         $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');
-        return $response->withHeader('Location', $routeParser->urlFor('check', ['url_id' => (string) $urlId]))->withStatus(302);
+        return $response->withHeader(
+            'Location',
+            $routeParser->urlFor('check', ['url_id' => (string) $urlId])
+        )->withStatus(302);
     }
     $urlCheckRepo = new UrlCheckRepository($this->get('pdo'));
     $urlCheckRepo->save($urlCheck, $urlId);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
-    return $response->withHeader('Location', $routeParser->urlFor('check', ['url_id' => (string) $urlId]))->withStatus(302);
+    return $response->withHeader(
+        'Location',
+        $routeParser->urlFor('check', ['url_id' => (string) $urlId])
+    )->withStatus(302);
 });
 $app->run();

@@ -23,7 +23,7 @@ class UrlCheck
         $client = new Client([
             'allow_redirects' => true,
         ]);
-        $response = null;
+
         try {
             $response = $client->request('GET', $this->url);
             $this->statusCode = $response->getStatusCode();
@@ -33,17 +33,19 @@ class UrlCheck
         if ($this->statusCode < 200 || $this->statusCode > 299) {
             return;
         }
-        $html = $response->getBody()->getContents() ?? '';
+        $html = $response->getBody()->getContents();
         $document = new Document($html);
-        /** @var Element $h1 */
+
         $h1 = $document->first('h1');
-        $this->h1 = $h1 ? $h1->text() : '';
-        /** @var Element $title */
+        $this->h1 = $h1 instanceof Element ? $h1->text() : '';
+
         $title = $document->first('title');
-        $this->title = $title ? $title->text() : '';
-        /** @var Element $description */
+        $this->title = $title instanceof Element ? $title->text() : '';
+
         $description = $document->first('meta[name="description"]');
-        $this->description = $description ? $description->getAttribute('content') : '';
+        $this->description = ($description instanceof Element && $description->getAttribute('content') !== null)
+            ? $description->getAttribute('content')
+            : '';
     }
     public function resourceIsAvailable(): bool
     {
