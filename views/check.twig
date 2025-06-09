@@ -24,7 +24,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="/urls">Сайты</a>
+                    <a class="nav-link" href="/urls">Сайты</a>
                 </li>
 
             </ul>
@@ -38,35 +38,61 @@
     {% endfor %}
 {% endif %}
 
+{% if flash.error is defined %}
+    {% for message in flash.error %}
+        <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
 <main class="flex-grow-1">
     <div class="container-lg mt-3">
-        <h1>Сайты</h1>
+        <h1>{{ url.name }}</h1>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover text-nowrap" data-test="urls">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Имя</th>
-                    <th>Последняя проверка</th>
-                    <th>Код ответа</th>
-                </tr>
-                </thead>
+            <table class="table table-bordered table-hover text-nowrap" data-test="url">
                 <tbody>
-                {% for url in urls %}
-                    <tr>
-                        <td>{{ url.id }}</td>
-                        <td>
-                            <a href="{{ url.link }}">
-                                {{ url.name }}
-                            </a>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                {% endfor %}
+                <tr>
+                    <td>ID</td>
+                    <td>{{ url.id }}</td>
+                </tr>
+                <tr>
+                    <td>Имя</td>
+                    <td>{{ url.name }}</td>
+                </tr>
+                <tr>
+                    <td>Дата создания</td>
+                    <td>{{ url.created_at }}</td>
+                </tr>
                 </tbody>
             </table>
         </div>
+        <h2 class="mt-5 mb-3">Проверки</h2>
+        <form method="post" action="/urls/{{ url.id }}/checks">
+            <input type="submit" class="btn btn-primary" value="Запустить проверку">
+        </form>
+        <table class="table table-bordered table-hover" data-test="checks">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Код ответа</th>
+                <th>h1</th>
+                <th>title</th>
+                <th>description</th>
+                <th>Дата проверки</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for url_check in url_checks %}
+                <tr>
+                    <td>{{ url_check.id }}</td>
+                    <td>{{ url_check.status_code }}</td>
+                    <td class="text-break">{{ url_check.h1 }}</td>
+                    <td class="text-break">{{ url_check.title }}</td>
+                    <td class="text-break">{{ url_check.description }}</td>
+                    <td>{{ url_check.created_at }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 </main>
 <footer class="border-top py-3 mt-5 flex-shrink-0">

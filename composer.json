@@ -20,7 +20,11 @@
         "slim/flash": "^0.4.0",
         "twig/twig": "^3.21",
         "vlucas/phpdotenv": "^5.6",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "vlucas/valitron": "^1.4",
+        "nesbot/carbon": "^3.9",
+        "imangazaliev/didom": "^2.0",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.1",
