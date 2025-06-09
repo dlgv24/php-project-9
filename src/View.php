@@ -24,7 +24,6 @@ class View
         try {
             $html = $this->twig->render($template, $data);
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            error_log('Twig error: ', $e->getMessage());
             $response->getBody()->write('Error rendering view');
             return $response->withStatus(500);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DiDom\Element;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use DiDom\Document;
@@ -32,12 +33,15 @@ class UrlCheck
         if ($this->statusCode < 200 || $this->statusCode > 299) {
             return;
         }
-        $html = $response->getBody()->getContents();
+        $html = $response->getBody()->getContents() ?? '';
         $document = new Document($html);
+        /** @var Element $h1 */
         $h1 = $document->first('h1');
         $this->h1 = $h1 ? $h1->text() : '';
+        /** @var Element $title */
         $title = $document->first('title');
         $this->title = $title ? $title->text() : '';
+        /** @var Element $description */
         $description = $document->first('meta[name="description"]');
         $this->description = $description ? $description->getAttribute('content') : '';
     }
