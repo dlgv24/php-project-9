@@ -25,7 +25,8 @@ $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function (Request $request, Response $response): Response {
     $params = [
-        'url' => ''
+        'url' => '',
+        'flash' => $this->get('flash')->getMessages()
     ];
     return $this->get('view')->render($response, 'home.twig', $params);
 })->setName('home');
@@ -102,8 +103,11 @@ $app->post('/urls', function (Request $request, Response $response): Response {
             ->withStatus(302);
     }
 
-    $this->get('flash')->addMessage('error', 'Некорректный URL');
-    return $response->withHeader('Location', $routeParser->urlFor('home'));
+    $params = [
+        'url' => $url['name'],
+        'flash' => ['error' => ['Некорректный URL']]
+    ];
+    return $this->get('view')->render($response, 'home.twig', $params)->withStatus(422);
 })->setName('addUrl');
 
 $app->post('/urls/{url_id}/checks', function (Request $request, Response $response, array $args): Response {
