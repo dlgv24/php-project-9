@@ -17,9 +17,6 @@ lint:
 cbf:
 	composer exec --verbose phpcbf -- --standard=PSR12 src public
 
-test:
-	composer exec --verbose phpunit
-
 test-coverage:
 	XDEBUG_MODE=coverage composer exec --verbose phpunit -- --coverage-clover=build/logs/clover.xml
 
