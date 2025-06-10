@@ -2,11 +2,10 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use DI\Container;
 use App\View;
 use Slim\Flash\Messages;
 
-return function (Container $container): void {
+return function (Di\Container $container): void {
     $container->set('pdo', function () {
         if (isset($_ENV['DATABASE_URL'])) {
             $databaseUrl = parse_url($_ENV['DATABASE_URL']);
