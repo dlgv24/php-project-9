@@ -6,7 +6,6 @@ use DiDom\Element;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use DiDom\Document;
-use GuzzleHttp\Psr7\Response;
 
 class UrlCheck
 {
@@ -24,7 +23,7 @@ class UrlCheck
         $client = new Client([
             'allow_redirects' => true,
         ]);
-        $response = new Response(0);
+
         try {
             $response = $client->request('GET', $this->url);
             $this->statusCode = $response->getStatusCode();
